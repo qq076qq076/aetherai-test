@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build -prod --base-href=/aetherai-test/ ",
+    "build": "ng build -prod --base-href=/aetherai-test/dist/ ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

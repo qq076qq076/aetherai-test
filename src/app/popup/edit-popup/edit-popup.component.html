@@ -1,0 +1,31 @@
+<h2>Edit Task</h2>
+<form (ngSubmit)="!isProcessing && editRow()"
+      [formGroup]="form">
+  <div class="column">
+    <div class="title">Task description</div>
+    <div class="content">
+      <app-input placeholder="Please input task description..."
+                 formControlName="description"></app-input>
+      <p class="errorMessage"
+         *ngIf="form.touched && form.controls.description.errors?.['required']">
+        Description is required
+      </p>
+    </div>
+  </div>
+  <div class="column">
+    <div class="title">Completed</div>
+    <div class="content">
+      <app-checkbox formControlName="isCompleted"></app-checkbox>
+    </div>
+  </div>
+  <div class="row">
+    <app-button class="cancel"
+                type="cancel"
+                (click)="!isProcessing && close()">
+      Cancel
+    </app-button>
+    <app-button>
+      {{ isProcessing? "Processing...": "Save" }}
+    </app-button>
+  </div>
+</form>

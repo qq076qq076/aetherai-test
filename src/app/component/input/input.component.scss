@@ -1,0 +1,30 @@
+:host {
+  display : block;
+  position: relative;
+
+  input {
+    color  : #5f5c65;
+    border : 1px solid #d5d5d5;
+    width  : 100%;
+    padding: 5px 15px;
+    height : 32px;
+
+    &:focus-visible {
+      outline: #71D2de auto 1px;
+    }
+
+    &.error {
+      outline         : #ff0000 auto 1px;
+      background-color: #ff00002a;
+    }
+  }
+
+  .error-message {
+    color    : #ff0000;
+    position : absolute;
+    right    : 0;
+    top      : 100%;
+    font-size: 12px;
+  }
+
+}

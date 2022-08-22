@@ -1,0 +1,12 @@
+<input [type]="type"
+       class="input"
+       [class.error]="error"
+       (focus)="focus = !focus"
+       (focusout)="focus = !focus"
+       (blur)="onTouched && onTouched($event)"
+       [(ngModel)]="value"
+       [placeholder]="placeholder" />
+<span class="error-message">
+  <ng-content *ngIf="error"
+              select="[error]"></ng-content>
+</span>

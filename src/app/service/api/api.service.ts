@@ -9,26 +9,16 @@ export class ApiService {
 
   constructor() { }
   private mockData: RowData[] = [];
-  private sortColumn: RowKey = 'id';
 
-  getRowData(sortColumn: RowKey = this.sortColumn): Observable<RowData[]> {
-    const desc = this.sortColumn === sortColumn;
-    const data = this.mockData.filter((item) => !item.isDelete)
-      .sort((a, b) => {
-        if (desc) {
-          return a[sortColumn]! > b[sortColumn]! ? 0 : 1
-        } else {
-          return a[sortColumn]! < b[sortColumn]! ? 0 : 1
-        }
-      })
-    this.sortColumn = sortColumn;
-    return of(data)
+  getRowData(): Observable<RowData[]> {
+    return of(this.mockData.filter((item) => !item.isDelete))
       .pipe(
         map((res): RowData[] =>
           res.map((item: any): RowData => ({
             description: item.description || '',
             isDelete: item.isDelete,
             isCompleted: item.isCompleted,
+            time: item.time,
             id: item.id,
           }))
         )
@@ -36,11 +26,13 @@ export class ApiService {
   }
 
   addRow(description: string): Observable<RowData[]> {
+    const date = new Date();
     const data = {
       description,
       isDelete: false,
       isCompleted: false,
       id: this.mockData.length,
+      time: date.toISOString(),
     };
     this.mockData.push(data);
     return this.getRowData()

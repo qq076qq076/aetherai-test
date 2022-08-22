@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const INPUT_VALUE_ACCESSOR = {
@@ -17,6 +17,8 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() type: string = 'text';
   @Input() placeholder = '';
   @Input() error: boolean = false;
+
+  @Output() blur = new EventEmitter();
   myValue: any;
   onChange: any;
   onTouched: any;

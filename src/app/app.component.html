@@ -10,42 +10,46 @@
                      formControlName="description">
           </app-input>
         </div>
-        <app-button class="button">{{ 'Add' }}
-
-        </app-button>
+        <app-button class="button">{{ 'Add' }}</app-button>
       </div>
     </form>
   </div>
   <div class="right">
-    showDelete:{{showDelete}},isCheckedAll:{{isCheckedAll}}
     <div class="card">
       <table>
         <thead>
           <tr>
-            <th class="id"
-                (click)="getRowData('id')">
+            <th class="id">
               <div class="row">
                 #
-                <mat-icon fontIcon="filter_list"
-                          *ngIf="sortColumn === 'id'">
-                </mat-icon>
               </div>
             </th>
-            <th class="des"
-                (click)="getRowData('description')">
-              <div class="row">
+            <th class="des">
+              <div class="row edit-icon">
                 Description
-                <mat-icon fontIcon="filter_list"
-                          *ngIf="sortColumn === 'description'">
+                <mat-icon fontIcon="search"
+                          *ngIf="!openSearch"
+                          (click)="openSearch = true">
                 </mat-icon>
+                <app-input *ngIf="openSearch"
+                           placeholder="search task"
+                           [(ngModel)]="search"
+                           (ngModelChange)="getRowData()"
+                           (blur)="closeSearch()">
+                </app-input>
               </div>
             </th>
-            <th class="status"
-                (click)="getRowData('isCompleted')">
+            <th class="status">
               <div class="row">
                 Completed
+              </div>
+            </th>
+            <th class="time edit-icon"
+                (click)="getRowData(sortColumn)">
+              <div class="row">
+                Create At
                 <mat-icon fontIcon="filter_list"
-                          *ngIf="sortColumn === 'isCompleted'">
+                          *ngIf="sortColumn === 'desc'">
                 </mat-icon>
               </div>
             </th>
@@ -66,6 +70,11 @@
               <app-checkbox [ngModel]="item.isCompleted"
                             (ngModelChange)="changeStatus(item,$event)">
               </app-checkbox>
+            </td>
+            <td class="time">
+              <span class="chip">
+                {{ item.time | date:'YYYY-MM-dd hh:mm:ss' }}
+              </span>
             </td>
             <td class="edit">
               <mat-icon class="edit-icon"

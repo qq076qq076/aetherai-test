@@ -32,7 +32,7 @@ export class EditPopupComponent implements OnInit, Popup {
   isProcessing: boolean = false;
   form = this.formBuilder.group({
     description: ['', [Validators.required]],
-    isCompleted: [false]
+    isCompleted: [false, []]
   });
 
   ngOnInit(): void {

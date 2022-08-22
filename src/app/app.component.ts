@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 import { showAnimation } from './animation/animation';
 import { PopupService } from './component/popup/popup.service';
-import { RowData, RowKey } from './interface/interface';
+import { RowData } from './interface/interface';
 import { EditPopupComponent } from './popup/edit-popup/edit-popup.component';
 import { ApiService } from './service/api/api.service';
 
@@ -24,10 +24,11 @@ export class AppComponent implements OnInit {
     private viewContainerRef: ViewContainerRef,
   ) { }
 
-  title = 'cbx-test';
   rowData: TData[] = [];
   processing: boolean = false;
-  sortColumn?: RowKey;
+  sortColumn?: 'asc' | 'desc' = 'asc';
+  openSearch: boolean = false;
+  search: string = '';
 
   get showDelete(): boolean {
     return !!this.rowData.find((item) => item.checked);
@@ -38,7 +39,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getRowData();
   }
 
   checkAll(checked: boolean) {
@@ -74,15 +74,24 @@ export class AppComponent implements OnInit {
     );
   }
 
-  getRowData(sortColumn?: RowKey) {
-    this.sortColumn = sortColumn;
-    this.apiService.getRowData(this.sortColumn)
+  getRowData(sortColumn?: 'asc' | 'desc') {
+    if (sortColumn) {
+      this.sortColumn = sortColumn === 'desc' ? 'asc' : 'desc';
+    }
+    this.apiService.getRowData()
       .pipe(
         map(item => this.mapList(item))
       )
       .subscribe((rowData) => {
-        this.rowData = rowData;
+        this.rowData = rowData.filter(item => item.description.indexOf(this.search) >= 0);
+        this.rowData.sort((a, b) => this.sort(a, b, this.sortColumn === 'asc'))
       });
+  }
+
+  private sort(a: TData, b: TData, isAsc: boolean = false) {
+    return isAsc
+      ? (a.time < b.time) ? -1 : 1
+      : (a.time < b.time) ? 1 : -1
   }
 
   select(data: TData, checked: boolean) {
@@ -117,8 +126,15 @@ export class AppComponent implements OnInit {
       checked: false,
       description: item.description,
       isCompleted: item.isCompleted,
+      time: item.time!,
       id: item.id!,
     }));
+  }
+
+  closeSearch() {
+    if (this.openSearch && !this.search) {
+      this.openSearch = false;
+    }
   }
 }
 
@@ -126,5 +142,6 @@ interface TData {
   checked: boolean;
   description: string;
   isCompleted: boolean;
+  time: string;
   id: number;
 }

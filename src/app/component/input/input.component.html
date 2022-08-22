@@ -3,7 +3,7 @@
        [class.error]="error"
        (focus)="focus = !focus"
        (focusout)="focus = !focus"
-       (blur)="onTouched && onTouched($event)"
+       (blur)="onTouched && onTouched($event); blur.emit()"
        [(ngModel)]="value"
        [placeholder]="placeholder" />
 <span class="error-message">

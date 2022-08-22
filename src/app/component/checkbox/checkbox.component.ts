@@ -22,15 +22,14 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
 
   @HostListener('click', ['$event']) click(e: MouseEvent) {
     if (this.onChange) {
-      console.log(!this.checked)
-      this.onChange(!this.checked);
+      this.checked = !this.checked;
+      this.onChange(this.checked);
     }
   }
 
   ngOnInit(): void {
   }
   writeValue(value: boolean): void {
-    console.log(value)
     this.checked = value;
   }
   registerOnChange(fn: (value: boolean) => void): void {
